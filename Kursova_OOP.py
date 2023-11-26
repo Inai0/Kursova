@@ -84,7 +84,7 @@ def main_menu(fertilizers_array):
             print (str(i+1)+'.'+logs[i])
     if roam==3:return clear_terminal() 
     else:return True  
-def order_edit(choosen_obj_id,fertilizers_array):
+def order_edit(choosen_obj_id,fertilizers_array,delete_check):
     #deleting ordered amout from ferliteze's batches
     if len(fertilizers_array[choosen_obj_id].storage)>0:
         while True:
@@ -105,7 +105,7 @@ def order_edit(choosen_obj_id,fertilizers_array):
     if amount>fertilizers_array[choosen_obj_id].overall_amount:
         print("\nNo enought fertilizers!")
         return fertilizers_array
-    logs.append('Ferlitizer type: '+fertilizers_array[choosen_obj_id].Show_type()+' Ferlitizer name: '+fertilizers_array[choosen_obj_id].name+' Amount ordered: '+str(amount)+' Date: '+datetime.now().strftime("%Y-%m-%d %H:%M"))
+    elif not delete_check:logs.append('Ferlitizer type: '+fertilizers_array[choosen_obj_id].Show_type()+' Ferlitizer name: '+fertilizers_array[choosen_obj_id].name+' Amount ordered: '+str(amount)+' Date: '+datetime.now().strftime("%Y-%m-%d %H:%M"))
     for i in range(len(fertilizers_array[choosen_obj_id].storage)):
         if dif<=fertilizers_array[choosen_obj_id].storage[i]:
             if dif==fertilizers_array[choosen_obj_id].storage[i]:
@@ -197,7 +197,7 @@ def ferlitizers_edit(fertilizers_array):
         
         while True:
             obj_data(fertilizers_array,choosen_obj_id)
-            print('\n1.Add batch\n2.Add order\n3.Back to main menu')
+            print('\n1.Add batch\n2.Delete batch\n3.Add order\n4.Back to main menu')
             roam_in_edit=input('\npress number to choose an option: ')
             if not re.match("^[0-9]*$", roam_in_edit):
                 print ("Error! Only numbers 0-9 allowed!")
@@ -206,8 +206,10 @@ def ferlitizers_edit(fertilizers_array):
         if roam_in_edit==1:
             fertilizers_array=batch_edit(choosen_obj_id,fertilizers_array)
         if roam_in_edit==2:
-            fertilizers_array=order_edit(choosen_obj_id,fertilizers_array)
+            fertilizers_array=order_edit(choosen_obj_id,fertilizers_array,True)
         if roam_in_edit==3:
+            fertilizers_array=order_edit(choosen_obj_id,fertilizers_array,False)
+        if roam_in_edit==4:
             return True
         elif roam_in_edit>3: print ('No such option')
     return True    
